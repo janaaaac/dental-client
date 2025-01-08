@@ -53,7 +53,7 @@ const Header = () => {
 
             {/* CTA Button */}
             <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors">
-              Make an Appointment
+            SIGN UP
             </button>
 
             {/* Mobile Menu Button */}

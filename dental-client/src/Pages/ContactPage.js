@@ -1,6 +1,6 @@
 import React from 'react';
 import { MapPin, Mail, Phone, Facebook, Twitter, Instagram, Youtube } from 'lucide-react';
-import FAQSection from './FAQSection';
+import FAQSection from '../Components/FAQSection';
 
 const ContactPage = () => {
   return (

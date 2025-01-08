@@ -19,6 +19,8 @@ import PatientProfile from './Pages/PatientProfile';
 import BookAppointment from './Pages/BookAppointment';
 import ContactPage from './Pages/ContactPage';
 import BlogPage from './Pages/BlogPage';
+import AboutHero from './Pages/AboutUs';
+import AvailableDentists from './Pages/AvailableDentists';
 
 
 
@@ -42,7 +44,9 @@ function App() {
           {/* <RegisterPage /> */}
           {/* <BookAppointment /> */}
           {/* <ContactPage /> */}
-          <BlogPage />
+          {/* <BlogPage /> */}
+          {/* <AboutHero /> */}
+          <AvailableDentists />
           <div className="main-content">
            
           </div>
