@@ -1,303 +1,434 @@
 import React, { useState } from 'react';
+import {
+  Calendar,
+  Clock,
+  User,
+  Phone,
+  Mail,
+  MessageSquare,
+  ChevronRight,
+  ChevronLeft,
+  CalendarCheck,
+  Heart,
+  Shield,
+  Stethoscope,
+  Activity,
+  CheckCircle, 
+  Sparkles,
+  Check // Add this line to import Check
+} from 'lucide-react';
+
+
 
 const BookAppointment = () => {
-  const [selectedDay, setSelectedDay] = useState('5'); // Default selected day
-  const [selectedTime, setSelectedTime] = useState('02:00 pm'); // Default selected time
+  const [step, setStep] = useState(1);
+  const [selectedService, setSelectedService] = useState('');
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    notes: ''
+  });
 
-  const styles = {
-    container: {
-      width: '100%',
-      minHeight: '100vh',
-      backgroundColor: '#fff',
-      fontFamily: 'system-ui, -apple-system, sans-serif'
-    },
-    hero: {
-      height: '300px',
-      background: 'linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url("https://images.unsplash.com/photo-1606811841689-23dfddce3e95?q=80&w=1800&auto=format&fit=crop")',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      display: 'flex',
-      alignItems: 'center',
-      padding: '0 48px'
-    },
-    heroTitle: {
-      color: '#fff',
-      fontSize: '42px',
-      fontWeight: '600'
-    },
-    content: {
-      maxWidth: '1200px',
-      margin: '-50px auto 0',
-      padding: '24px 48px',
-      position: 'relative'
-    },
-    header: {
-      backgroundColor: '#52b4ed',
-      color: '#fff',
-      padding: '16px 24px',
-      borderRadius: '8px 8px 0 0',
-      fontSize: '18px',
-      fontWeight: '500'
-    },
-    form: {
-      backgroundColor: '#fff',
-      padding: '32px',
-      borderRadius: '0 0 8px 8px',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr',
-      gap: '48px'
-    },
-    inputGroup: {
-      marginBottom: '24px'
-    },
-    label: {
-      display: 'block',
-      marginBottom: '8px',
-      color: '#334155',
-      fontSize: '15px'
-    },
-    input: {
-      width: '100%',
-      padding: '10px 16px',
-      border: '1px solid #e2e8f0',
-      borderRadius: '6px',
-      fontSize: '14px'
-    },
-    select: {
-      width: '100%',
-      padding: '10px 16px',
-      border: '1px solid #e2e8f0',
-      borderRadius: '6px',
-      fontSize: '14px',
-      backgroundColor: '#fff'
-    },
-    calendar: {
-      marginBottom: '24px'
-    },
-    weekDays: {
-      display: 'flex',
-      gap: '8px',
-      marginBottom: '24px'
-    },
-    dayButton: {
-      width: '40px',
-      height: '40px',
-      borderRadius: '50%',
-      border: '1px solid #e2e8f0',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      cursor: 'pointer',
-      backgroundColor: '#fff'
-    },
-    activeDay: {
-      backgroundColor: '#52b4ed',
-      color: '#fff',
-      border: 'none'
-    },
-    dayText: {
-      fontSize: '11px',
-      color: 'inherit'
-    },
-    dayNumber: {
-      fontSize: '14px',
-      fontWeight: '500'
-    },
-    timeSlots: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
-      gap: '8px',
-      marginTop: '16px'
-    },
-    timeSlot: {
-      padding: '8px 16px',
-      border: '1px solid #e2e8f0',
-      borderRadius: '20px',
-      fontSize: '14px',
-      textAlign: 'center',
-      color: '#64748b',
-      cursor: 'pointer'
-    },
-    activeTimeSlot: {
-      backgroundColor: '#52b4ed',
-      color: '#fff',
-      border: 'none'
-    },
-    doctorsGrid: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fill, minmax(170px, 1fr))',
-      gap: '24px',
-      marginTop: '24px'
-    },
-    doctorCard: {
-      backgroundColor: '#fff',
-      borderRadius: '8px',
-      overflow: 'hidden',
-      boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-      cursor: 'pointer'
-    },
-    doctorImage: {
-      width: '100%',
-      height: '160px',
-      objectFit: 'cover'
-    },
-    doctorInfo: {
-      padding: '16px'
-    },
-    availableTag: {
-      display: 'inline-block',
-      padding: '4px 8px',
-      backgroundColor: '#dcfce7',
-      color: '#16a34a',
-      borderRadius: '4px',
-      fontSize: '12px',
-      marginBottom: '8px'
-    },
-    doctorName: {
-      fontSize: '16px',
-      fontWeight: '500',
-      color: '#334155',
-      marginBottom: '4px'
-    },
-    doctorSpecialty: {
-      fontSize: '14px',
-      color: '#64748b'
-    },
-    textarea: {
-      width: '100%',
-      padding: '12px 16px',
-      border: '1px solid #e2e8f0',
-      borderRadius: '6px',
-      height: '120px',
-      resize: 'none',
-      fontSize: '14px'
-    },
-    bookButton: {
-      backgroundColor: '#52b4ed',
-      color: '#fff',
-      padding: '12px 24px',
-      borderRadius: '6px',
-      border: 'none',
-      cursor: 'pointer',
-      fontSize: '14px',
-      fontWeight: '500',
-      width: 'fit-content',
-      marginLeft: 'auto'
-    }
-  };
+  const currentStep = step; // Define currentStep
 
-  const doctors = [
+  const services = [
     {
-      name: 'Dr. Chathuri De Silva',
-      specialty: 'General Dentist',
-      image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=400&auto=format&fit=crop'
+      id: 1,
+      name: 'General Consultation',
+      duration: '30 min',
+      price: '$100',
+      icon: <Stethoscope className="w-6 h-6" />,
+      color: 'blue'
     },
     {
-      name: 'Dr. Dasun Shanaka',
-      specialty: 'General Dentist',
-      image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=400&auto=format&fit=crop'
+      id: 2,
+      name: 'Specialist Visit',
+      duration: '45 min',
+      price: '$150',
+      icon: <Activity className="w-6 h-6" />,
+      color: 'purple'
+    },
+    {
+      id: 3,
+      name: 'Health Check-up',
+      duration: '60 min',
+      price: '$200',
+      icon: <Heart className="w-6 h-6" />,
+      color: 'rose'
+    },
+    {
+      id: 4,
+      name: 'Emergency Care',
+      duration: '90 min',
+      price: '$300',
+      icon: <Shield className="w-6 h-6" />,
+      color: 'red'
     }
   ];
 
-  return (
-    <div style={styles.container}>
-      <div style={styles.hero}>
-        <h1 style={styles.heroTitle}>Book an appointment.</h1>
-      </div>
+  const timeSlots = [
+    '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM',
+    '11:00 AM', '11:30 AM', '02:00 PM', '02:30 PM',
+    '03:00 PM', '03:30 PM', '04:00 PM', '04:30 PM'
+  ];
 
-      <div style={styles.content}>
-        <div style={styles.header}>Book an Appointment</div>
+  const renderServiceCard = (service) => {
+    const colorClasses = {
+      blue: 'bg-blue-50 border-blue-200 text-blue-600',
+      purple: 'bg-purple-50 border-purple-200 text-purple-600',
+      rose: 'bg-rose-50 border-rose-200 text-rose-600',
+      red: 'bg-red-50 border-red-200 text-red-600'
+    };
+
+    return (
+      <div
+        key={service.id}
+        onClick={() => setSelectedService(service.name)}
+        className={`relative p-6 rounded-2xl cursor-pointer transition-all duration-300 ${
+          selectedService === service.name
+            ? `border-2 ${colorClasses[service.color]} transform scale-[1.02]`
+            : 'border border-gray-100 hover:border-gray-200 bg-white hover:shadow-lg'
+        }`}
+      >
+        <div className={`inline-flex p-3 rounded-xl ${colorClasses[service.color]}`}>
+          {service.icon}
+        </div>
         
-        <div style={styles.form}>
-          <div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Full name</label>
-              <input type="text" style={styles.input} />
-            </div>
+        <h3 className="text-lg font-semibold mt-4 text-gray-900">{service.name}</h3>
+        
+        <div className="flex items-center justify-between mt-4">
+          <div className="flex items-center text-gray-500 text-sm">
+            <Clock className="w-4 h-4 mr-1" />
+            {service.duration}
+          </div>
+          <span className="font-semibold text-gray-900">{service.price}</span>
+        </div>
+      </div>
+    );
+  };
 
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Phone Number</label>
-              <input type="tel" style={styles.input} />
-            </div>
+  const renderDatePicker = () => {
+    const dates = [];
+    const today = new Date();
+    
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      dates.push(date);
+    }
 
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Services</label>
-              <select style={styles.select}>
-                <option>Tooth Cleaning</option>
-                <option>Root Canal</option>
-                <option>Braces</option>
-              </select>
-            </div>
+    return (
+      <div className="grid grid-cols-7 gap-2">
+        {dates.map((date, index) => (
+          <div
+            key={index}
+            onClick={() => setSelectedDate(date.toISOString().split('T')[0])}
+            className={`flex flex-col items-center p-4 rounded-xl cursor-pointer transition-all ${
+              selectedDate === date.toISOString().split('T')[0]
+                ? 'bg-blue-500 text-white'
+                : 'hover:bg-blue-50'
+            }`}
+          >
+            <span className="text-xs font-medium">
+              {date.toLocaleString('default', { weekday: 'short' })}
+            </span>
+            <span className="text-xl font-bold my-1">{date.getDate()}</span>
+            <span className="text-xs">
+              {date.toLocaleString('default', { month: 'short' })}
+            </span>
+          </div>
+        ))}
+      </div>
+    );
+  };
 
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Available Doctors for selected date</label>
-              <div style={styles.doctorsGrid}>
-                {doctors.map((doctor, index) => (
-                  <div key={index} style={styles.doctorCard}>
-                    <img src={doctor.image} alt={doctor.name} style={styles.doctorImage} />
-                    <div style={styles.doctorInfo}>
-                      <div style={styles.availableTag}>Available</div>
-                      <h3 style={styles.doctorName}>{doctor.name}</h3>
-                      <p style={styles.doctorSpecialty}>{doctor.specialty}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+  const renderTimeSlots = () => (
+    <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-6">
+      {timeSlots.map((time, index) => (
+        <div
+          key={index}
+          onClick={() => setSelectedTime(time)}
+          className={`p-3 rounded-xl text-center cursor-pointer transition-all ${
+            selectedTime === time
+              ? 'bg-blue-500 text-white'
+              : 'hover:bg-blue-50 border border-gray-100'
+          }`}
+        >
+          <span className="text-sm font-medium">{time}</span>
+        </div>
+      ))}
+    </div>
+  );
 
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Message</label>
-              <textarea style={styles.textarea} />
+  const renderStepContent = () => {
+    switch (step) {
+      case 1:
+        return (
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-gray-900">Choose Service</h2>
+              <p className="text-gray-500 mt-2">Select the type of appointment you need</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {services.map(renderServiceCard)}
             </div>
           </div>
+        );
 
-          <div>
-            <div style={styles.inputGroup}>
-              <label style={styles.label}>Select Your Session Date</label>
-              <div style={styles.weekDays}>
-                {[
-                  { day: 'WED', num: '5' },
-                  { day: 'THU', num: '6' },
-                  { day: 'FRI', num: '7' },
-                  { day: 'SAT', num: '8' },
-                  { day: 'SUN', num: '9' },
-                  { day: 'MON', num: '10' },
-                  { day: 'TUE', num: '11' }
-                ].map((item) => (
-                  <div
-                    key={item.day}
-                    style={{
-                      ...styles.dayButton,
-                      ...(item.num === selectedDay ? styles.activeDay : {})
-                    }}
-                    onClick={() => setSelectedDay(item.num)}
-                  >
-                    <span style={styles.dayText}>{item.day}</span>
-                    <span style={styles.dayNumber}>{item.num}</span>
-                  </div>
-                ))}
+      case 2:
+        return (
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-gray-900">Select Date & Time</h2>
+              <p className="text-gray-500 mt-2">Choose your preferred appointment slot</p>
+            </div>
+            
+            {renderDatePicker()}
+            {renderTimeSlots()}
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-gray-900">Your Information</h2>
+              <p className="text-gray-500 mt-2">Please provide your contact details</p>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                  <input
+                    type="text"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  />
+                </div>
               </div>
 
-              <label style={styles.label}>Available slots for the selected Doctor</label>
-              <div style={styles.timeSlots}>
-                {['02:00 pm', '03:00 pm', '04:00 pm', '05:00 pm', '06:00 pm', '07:00 pm'].map((time, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      ...styles.timeSlot,
-                      ...(time === selectedTime ? styles.activeTimeSlot : {})
-                    }}
-                    onClick={() => setSelectedTime(time)}
-                  >
-                    {time}
-                  </div>
-                ))}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                  <input
+                    type="email"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                <div className="relative">
+                  <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                  <input
+                    type="tel"
+                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                <div className="relative">
+                  <MessageSquare className="absolute left-3 top-3 text-gray-400" size={20} />
+                  <textarea
+                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    rows={4}
+                    value={formData.notes}
+                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  />
+                </div>
               </div>
             </div>
+          </div>
+        );
 
-            <button style={styles.bookButton}>Book Appointment</button>
+      case 4:
+        return (
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl font-bold text-gray-900">Confirm Booking</h2>
+              <p className="text-gray-500 mt-2">Review your appointment details</p>
+            </div>
+            
+            <div className="bg-white p-6 rounded-2xl border border-gray-100">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center pb-4 border-b">
+                  <span className="text-gray-600">Service</span>
+                  <span className="font-medium">{selectedService}</span>
+                </div>
+                
+                <div className="flex justify-between items-center pb-4 border-b">
+                  <span className="text-gray-600">Date</span>
+                  <span className="font-medium">
+                    {selectedDate && new Date(selectedDate).toLocaleDateString()}
+                  </span>
+                </div>
+                
+                <div className="flex justify-between items-center pb-4 border-b">
+                  <span className="text-gray-600">Time</span>
+                  <span className="font-medium">{selectedTime}</span>
+                </div>
+                
+                <div className="flex justify-between items-center pb-4 border-b">
+                  <span className="text-gray-600">Name</span>
+                  <span className="font-medium">{formData.name}</span>
+                </div>
+                
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Email</span>
+                  <span className="font-medium">{formData.email}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  const renderProgress = () => {
+    const steps = [
+      { id: 1, label: 'Choose Service', icon: <Sparkles size={16} /> },
+      { id: 2, label: 'Pick Time', icon: <Clock size={16} /> },
+      { id: 3, label: 'Your Details', icon: <User size={16} /> },
+      { id: 4, label: 'Confirmation', icon: <CheckCircle size={16} /> }
+    ];
+  
+    return (
+      <div className="max-w-2xl mx-auto p-6">
+        <div className="relative">
+          {/* Connection Lines */}
+          <div className="absolute top-[1.5rem] left-[10%] right-[10%] h-0.5 bg-gray-100" />
+          <div 
+            className="absolute top-[1.5rem] left-[10%] h-0.5 bg-blue-500 transition-all duration-500"
+            style={{ 
+              width: `${((currentStep - 1) / (steps.length - 1)) * 80}%`,
+              background: 'linear-gradient(90deg, #60A5FA, #3B82F6)'
+            }}
+          />
+  
+          {/* Steps */}
+          <div className="relative flex justify-between">
+            {steps.map((step, idx) => (
+              <div key={step.id} className="flex flex-col items-center">
+                {/* Step Circle with Pulse Effect */}
+                <div className="relative">
+                  <div
+                    className={`
+                      w-12 h-12 rounded-full flex items-center justify-center
+                      transition-all duration-500 transform
+                      ${currentStep === step.id 
+                        ? 'bg-blue-500 scale-110' 
+                        : currentStep > step.id 
+                        ? 'bg-blue-500'
+                        : 'bg-white border-2 border-gray-200'
+                      }
+                    `}
+                  >
+                    {/* Inner Circle with Icon */}
+                    <div
+                      className={`
+                        w-10 h-10 rounded-full flex items-center justify-center
+                        ${currentStep >= step.id ? 'text-white' : 'text-gray-400'}
+                        ${currentStep === step.id ? 'animate-pulse' : ''}
+                      `}
+                    >
+                      {currentStep > step.id ? (
+                        <Check className="w-5 h-5" />
+                      ) : (
+                        <div className="flex flex-col items-center">
+                          {step.icon}
+                          <span className="text-[10px] mt-0.5">{step.id}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+  
+                  {/* Pulse Effect for Current Step */}
+                  {currentStep === step.id && (
+                    <>
+                      <div className="absolute top-0 left-0 w-12 h-12 rounded-full bg-blue-500 opacity-20 animate-ping" />
+                      <div className="absolute top-0 left-0 w-12 h-12 rounded-full bg-blue-400 opacity-30 animate-pulse" />
+                    </>
+                  )}
+                </div>
+  
+                {/* Label */}
+                <span
+                  className={`
+                    mt-2 text-xs font-medium
+                    ${currentStep === step.id 
+                      ? 'text-blue-600' 
+                      : currentStep > step.id 
+                      ? 'text-blue-500'
+                      : 'text-gray-400'
+                    }
+                  `}
+                >
+                  {step.label}
+                </span>
+  
+                {/* Active Step Dots */}
+                {currentStep === step.id && (
+                  <div className="mt-1 flex space-x-0.5">
+                    <div className="w-1 h-1 rounded-full bg-blue-500 animate-bounce" 
+                         style={{ animationDelay: '0ms' }} />
+                    <div className="w-1 h-1 rounded-full bg-blue-500 animate-bounce" 
+                         style={{ animationDelay: '150ms' }} />
+                    <div className="w-1 h-1 rounded-full bg-blue-500 animate-bounce" 
+                         style={{ animationDelay: '300ms' }} />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+  return (
+    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        {renderProgress()}
+        
+        <div className="bg-white rounded-2xl shadow-sm p-8">
+          {renderStepContent()}
+          
+          <div className="flex justify-between mt-8 pt-6 border-t">
+            <button
+              onClick={() => setStep(Math.max(1, step - 1))}
+              className={`flex items-center px-6 py-3 rounded-xl border border-gray-200 ${
+                step === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
+              }`}
+              disabled={step === 1}
+            >
+              <ChevronLeft size={20} className="mr-2" />
+              Back
+            </button>
+            
+            <button
+              onClick={() => step < 4 ? setStep(step + 1) : console.log('Submit')}
+              className="flex items-center px-6 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600"
+            >
+              {step === 4 ? 'Confirm Booking' : 'Continue'}
+              {step < 4 && <ChevronRight size={20} className="ml-2" />}
+            </button>
           </div>
         </div>
       </div>
